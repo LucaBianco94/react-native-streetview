@@ -17,6 +17,7 @@ import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.events.EventDispatcher;
 import com.google.android.gms.maps.OnStreetViewPanoramaReadyCallback;
 import com.google.android.gms.maps.StreetViewPanorama;
+import com.google.android.gms.maps.StreetViewSource;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.StreetViewPanoramaView;
 import com.google.android.gms.maps.model.StreetViewPanoramaCamera;
@@ -67,7 +68,7 @@ public class NSTStreetView extends StreetViewPanoramaView implements OnStreetVie
 
         this.panorama = panorama;
         this.panorama.setPanningGesturesEnabled(allGesturesEnabled);
-
+        this.panorama.isStreetNamesEnabled(false)
         final EventDispatcher eventDispatcher = ((ReactContext) getContext())
                 .getNativeModule(UIManagerModule.class).getEventDispatcher();
 
@@ -101,7 +102,7 @@ public class NSTStreetView extends StreetViewPanoramaView implements OnStreetVie
         });
 
         if (coordinate != null) {
-            this.panorama.setPosition(coordinate, radius);
+            this.panorama.setPosition(coordinate, radius, StreetViewSource.OUTDOOR);
         }
 
        long duration = 1000;
@@ -133,7 +134,7 @@ public class NSTStreetView extends StreetViewPanoramaView implements OnStreetVie
         // Saving to local variable as panorama may not be ready yet (async)
         this.coordinate = new LatLng(lat, lng);
          if (this.coordinate != null && this.started  ) {
-            this.panorama.setPosition(this.coordinate, this.radius);
+            this.panorama.setPosition(this.coordinate, this.radius, StreetViewSource.OUTDOOR);
          }
     }
     public void setPov(ReadableMap pov) {
