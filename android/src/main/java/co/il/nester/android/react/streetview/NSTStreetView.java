@@ -68,7 +68,7 @@ public class NSTStreetView extends StreetViewPanoramaView implements OnStreetVie
 
         this.panorama = panorama;
         this.panorama.setPanningGesturesEnabled(allGesturesEnabled);
-        this.panorama.isStreetNamesEnabled(false)
+        this.panorama.isStreetNamesEnabled(false);
         final EventDispatcher eventDispatcher = ((ReactContext) getContext())
                 .getNativeModule(UIManagerModule.class).getEventDispatcher();
 
