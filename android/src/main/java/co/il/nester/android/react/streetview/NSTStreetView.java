@@ -11,13 +11,11 @@ package co.il.nester.android.react.streetview;
 
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReadableMap;
-import com.facebook.react.bridge.WritableMap;
-import com.facebook.react.bridge.Arguments;
 import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.events.EventDispatcher;
 import com.google.android.gms.maps.OnStreetViewPanoramaReadyCallback;
 import com.google.android.gms.maps.StreetViewPanorama;
-import com.google.android.gms.maps.StreetViewSource;
+import com.google.android.gms.maps.model.StreetViewSource;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.StreetViewPanoramaView;
 import com.google.android.gms.maps.model.StreetViewPanoramaCamera;
@@ -68,7 +66,7 @@ public class NSTStreetView extends StreetViewPanoramaView implements OnStreetVie
 
         this.panorama = panorama;
         this.panorama.setPanningGesturesEnabled(allGesturesEnabled);
-        this.panorama.isStreetNamesEnabled(false);
+        this.panorama.setStreetNamesEnabled(false);
         final EventDispatcher eventDispatcher = ((ReactContext) getContext())
                 .getNativeModule(UIManagerModule.class).getEventDispatcher();
 
@@ -86,12 +84,9 @@ public class NSTStreetView extends StreetViewPanoramaView implements OnStreetVie
         panorama.setOnStreetViewPanoramaChangeListener(new StreetViewPanorama.OnStreetViewPanoramaChangeListener() {
             @Override
             public void onStreetViewPanoramaChange(StreetViewPanoramaLocation streetViewPanoramaLocation) {
-                if (streetViewPanoramaLocation != null) {
-                    WritableMap map = Arguments.createMap();
-                    map.putDouble("latitude", streetViewPanoramaLocation.position.latitude);
-                    map.putDouble("longitude", streetViewPanoramaLocation.position.longitude);
+                if (streetViewPanoramaLocation != null && streetViewPanoramaLocation.links != null ) {
                     eventDispatcher.dispatchEvent(
-                            new NSTStreetViewEvent(getId(), NSTStreetViewEvent.ON_SUCCESS, map)
+                            new NSTStreetViewEvent(getId(), NSTStreetViewEvent.ON_SUCCESS)
                     );
                 } else {
                     eventDispatcher.dispatchEvent(
